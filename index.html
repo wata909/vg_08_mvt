@@ -157,32 +157,6 @@
                     .setHTML(description)
                     .addTo(map);
             });
-            
-            map.on('load', function() {
-                var baseLayers = [
-                    {id: 'gsi-std', name: '地理院地図 標準地図'},
-                    {id: 'gsi-pole', name: '地理院地図 淡色地図'},
-                    {id: 'gsi-ort', name: '地理院地図 オルソ画像'},
-                    {id: 'rapid-raster', name: '迅速測図'}
-                ];
-                var swoptions = {};
-                swoptions.baseLayers = baseLayers;
-                map.addControl(new SwitchLayerControl(swoptions), 'top-right');
-            });
-            map.on('load', function() {
-              map.addLayer({
-              'id': 'vg',
-              'type': 'fill',
-              'source': {
-                 type: 'vector',
-                 url: 'mvt'
-                 },
-                 'source-layer': 'vg',
-                 'paint': {
-                 'fill-color': '#ff69b4',
-                 'fill-outline-color': '#ff69b4',
-                 }
-                 });
         </script>
 
     </body>
