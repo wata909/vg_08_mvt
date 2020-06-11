@@ -1,0 +1,40 @@
+{
+    "format": "pbf",
+    "name": "fude",
+    "id": "fude",
+    "bounds": [
+        122.937012,
+        24.026397,
+        145.810547,
+        45.521744
+    ],
+    "center": [
+        143.734131,
+        43.842451,
+        14
+    ],
+    "maxzoom": 16,
+    "minzoom": 7,
+    "version": "2",
+    "attribution": "NIAES",
+    "description": "",
+    "pixel_scale": 256,
+    "tilejson": "2.0.0",
+    "tiles": [
+      "https://habs.dc.affrc.go.jp/spatial_data/maff_fude_id/mvt/{z}/{x}/{y}.pbf"
+    ],
+    "vector_layers": [ 
+        { 
+            "id": "fude", 
+            "description": "", 
+            "minzoom": 7, 
+            "maxzoom": 16, 
+            "fields": {
+                "FID": "Number", 
+                "LC": "String", 
+                "Poly_ID": "String"
+            }
+        } 
+    ]
+}
+  

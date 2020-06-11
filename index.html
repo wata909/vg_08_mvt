@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>筆ポリゴン閲覧サイト</title>
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <script src='https://api.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css' rel='stylesheet' />
+        <style>
+            body { margin: 0; padding: 0; }
+            #map { position: absolute; top: 0; bottom: 0; width: 100%; };
+        </style>
+    </head>
+    <body>
+        <style>
+            #switch-layer-ctrl {
+                width: 150px;
+                padding: 10px 0px 10px 10px;
+            }
+        </style>
+
+        <nav id="menu"></nav>
+        <div id="map"></div>
+
+        <script>
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style: './fude-style.json',
+                zoom: 14,
+                center: [143.734131, 43.842451],
+                hash: true,
+                antialias: false
+            });
+            var nav = new mapboxgl.NavigationControl();
+            map.addControl(nav, 'top-left');
+            var scale = new mapboxgl.ScaleControl();
+            map.addControl(scale, 'bottom-left');
+            map.addControl(new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                }
+            }), 'top-left');
+
+            function SwitchLayerControl(options) {
+                this._baseLayers = options.baseLayers || [];
+            }
+            SwitchLayerControl.prototype._createRadio = function(layer) {
+                var radio = document.createElement('input');
+                radio.setAttribute('type', 'radio');
+                radio.id = layer.id;
+                if (layer.id === this._baseLayers[0].id) {
+                    radio.checked = true;
+                    map.setLayoutProperty(layer.id, 'visibility', 'visible');
+                } else {
+                    map.setLayoutProperty(layer.id, 'visibility', 'none');
+                }
+                this._container.appendChild(radio);
+                var name = document.createElement('label');
+                name.setAttribute('for', radio.id);
+                name.appendChild(document.createTextNode(layer.name));
+                this._container.appendChild(name);
+
+                var self = this;
+                radio.addEventListener('change', function(event) {
+                    event.target.checked = true;
+                    self._map.setLayoutProperty(event.target.id, 'visibility', 'visible');
+
+                    self._baseLayers.forEach(function(l) {
+                        if (l.id !== event.target.id) {
+                            document.getElementById(l.id).checked = false;
+                            self._map.setLayoutProperty(l.id, 'visibility', 'none');
+                        }
+                    }, self);
+                });
+            }
+            SwitchLayerControl.prototype._createRadioContainer = function() {
+                this._baseLayers.forEach(function(layer) {
+                    this._createRadio(layer);
+                    this._container.appendChild(document.createElement('br'));
+                }, this);
+            };
+            
+            SwitchLayerControl.prototype.onAdd = function(map) {
+                this._map = map;
+                this._container = document.createElement('div');
+                this._container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group';
+                this._container.id = 'switch-layer-ctrl';
+                this._createRadioContainer();
+                return this._container;
+            };
+            SwitchLayerControl.prototype.onRemove = function () {
+                this._container.parentNode.removeChild(this._container);
+                this._map = undefined;
+            };
+
+
+            var popups = [];
+            var lock = false;
+            map.on('click', 'fude', function(e) {
+                var feature = e.features[0];
+                var description = "<p>";
+                    description += "FID: ";
+                    description += feature.properties["FID"];
+                    description += "<br>";
+                    description += "LC: ";
+                    description += feature.properties["LC"];
+                    description += "</p>"
+                new mapboxgl.Popup()
+                    .setLngLat(e.lngLat)
+                    .setHTML(description)
+                    .addTo(map);
+                map.setFilter('fude-highlight', [
+                    'in',
+                    'Poly_ID',
+                    feature.properties.Poly_ID
+                ]);
+                lock = true;
+            });
+            map.on('click', function(e) {
+                if (!lock) {
+                    map.setFilter('fude-highlight', [
+                        'in',
+                        'Poly_ID',
+                        ''
+                    ]);
+                }
+                lock = false;
+            });
+            map.on('mouseenter', 'fude', function() {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+            map.on('mouseleave', 'fude', function() {
+                map.getCanvas().style.cursor = '';
+            });
+            map.on('click', 'gsi-road', function(e) {
+                if (!lock) {
+                    map.setFilter('fude-highlight', [
+                        'in',
+                        'Poly_ID',
+                        ''
+                    ]);
+                }
+                lock = false;
+                var feature = e.features[0];
+                var description = "";
+                if (feature.properties["rdCtg"] === 0) {
+                    description = "国道";
+                } else if (feature.properties["rdCtg"] === 1) {
+                    description = "県道";
+                } else if (feature.properties["rdCtg"] === 2) {
+                    description = "市道";
+                } else {
+                    return
+                }
+                new mapboxgl.Popup()
+                    .setLngLat(e.lngLat)
+                    .setHTML(description)
+                    .addTo(map);
+            });
+            map.on('load', function() {
+                var baseLayers = [
+                    {id: 'gsi-std', name: '地理院地図 標準地図'},
+                    {id: 'gsi-pole', name: '地理院地図 淡色地図'},
+                    {id: 'gsi-ort', name: '地理院地図 オルソ画像'},
+                    {id: 'rapid-raster', name: '迅速測図'}
+                ];
+                var swoptions = {};
+                swoptions.baseLayers = baseLayers;
+                map.addControl(new SwitchLayerControl(swoptions), 'top-right');
+            });
+        </script>
+
+    </body>
+</html>
