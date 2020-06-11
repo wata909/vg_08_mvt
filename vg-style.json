@@ -104,7 +104,7 @@
         "fill-color": "rgba(0, 255, 0, 0.5)",
         "fill-outline-color": "rgba(0, 255, 0, 0.3)"
         }     
-    },
+    }
   ],
   "id": "basic"
 }
