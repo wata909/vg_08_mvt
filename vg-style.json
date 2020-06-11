@@ -1,0 +1,111 @@
+{
+  "version": 8,
+  "name": "Basic",
+  "sources": {
+    "vg": {
+      "type": "vector", 
+        "tiles": [
+        "https://wata909.github.io/vg_08_mvt/{z}/{x}/{y}.png"
+      ],
+      "minzoom": 0,
+      "maxzoom": 11,
+      "attribution": "国土地理院"
+    },
+
+    "gsi-std": {
+      "type": "raster",
+      "tiles": [
+        "https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png"
+      ],
+      "minzoom": 0,
+      "maxzoom": 18,
+      "attribution": "国土地理院"
+    },
+    "gsi-pole": {
+      "type": "raster",
+      "tiles": [
+        "https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png"
+      ],
+      "minzoom": 0,
+      "maxzoom": 18,
+      "attribution": "国土地理院 / Shoreline data is derived from: United States. National Imagery and Mapping Agency. \"Vector Map Level 0 (VMAP0).\" Bethesda, MD: Denver, CO: The Agency; USGS Information Services, 1997."
+    },
+    "gsi-ort": {
+      "type": "raster",
+      "tiles": [
+        "https://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg"
+      ],
+      "minzoom": 14,
+      "maxzoom": 18,
+      "attribution": "国土地理院"
+    },
+    "rapid-raster": {
+      "type": "raster",
+      "tiles": [
+        "https://www.finds.jp/ws/tmc/1.0.0/Kanto_Rapid-900913-L/{z}/{x}/{y}.png"
+      ],
+      "minzoom": 0,
+      "maxzoom": 17
+    },
+    "gsi-vector": {
+      "type": "vector",
+      "tiles": [
+        "https://cyberjapandata.gsi.go.jp/xyz/experimental_bvmap/{z}/{x}/{y}.pbf"
+      ],
+      "minzoom": 5,
+      "maxzoom": 16
+    }
+  },
+  "layers": [
+    {
+      "id": "gsi-std",
+      "type": "raster",
+      "source": "gsi-std",
+      "minzoom": 0,
+      "maxzoom": 18
+    },
+    {
+      "id": "gsi-pole",
+      "type": "raster",
+      "source": "gsi-pole",
+      "minzoom": 0,
+      "maxzoom": 18,
+      "layout": {
+        "visibility": "none"
+      }
+    },
+    {
+      "id": "gsi-ort",
+      "type": "raster",
+      "source": "gsi-ort",
+      "minzoom": 14,
+      "maxzoom": 18,
+      "layout": {
+        "visibility": "none"
+      }
+    },
+    {
+      "id": "rapid-raster",
+      "type": "raster",
+      "source": "rapid-raster",
+      "minzoom": 0,
+      "maxzoom": 17,
+      "layout": {
+        "visibility": "none"
+      }
+    },
+    {
+      "id": "vg",
+      "type": "fill",
+      "source": "vg",
+      "source-layer": "vg",
+      "minzoom": 7,
+      "maxzoom": 18,
+      "paint": {
+        "fill-color": "rgba(0, 255, 0, 0.5)",
+        "fill-outline-color": "rgba(0, 255, 0, 0.3)"
+        }     
+    },
+  ],
+  "id": "basic"
+}
