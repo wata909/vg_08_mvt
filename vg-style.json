@@ -5,14 +5,12 @@
     "vg": {
       "type": "vector", 
         "tiles": [
-        "https://wata909.github.io/vg_08_mvt/mvt/{z}/{x}/{y}.pbf
-"
+        "https://wata909.github.io/vg_08_mvt/mvt/{z}/{x}/{y}.pbf"
       ],
       "minzoom": 0,
       "maxzoom": 11,
-      "attribution": "国土地理院"
+      "attribution": "環境省"
     },
-
     "gsi-std": {
       "type": "raster",
       "tiles": [
