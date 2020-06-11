@@ -96,8 +96,8 @@
     {
       "id": "vg",
       "type": "fill",
-      "source": "mvt",
-      "source-layer": "mvt",
+      "source": "vg",
+      "source-layer": "vg",
       "minzoom": 7,
       "maxzoom": 18,
       "paint": {
