@@ -5,7 +5,8 @@
     "vg": {
       "type": "vector", 
         "tiles": [
-        "https://wata909.github.io/vg_08_mvt/mvt/{z}/{x}/{y}.png"
+        "https://wata909.github.io/vg_08_mvt/mvt/{z}/{x}/{y}.pbf
+"
       ],
       "minzoom": 0,
       "maxzoom": 11,
