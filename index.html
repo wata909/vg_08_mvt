@@ -157,6 +157,7 @@
                     .setHTML(description)
                     .addTo(map);
             });
+            
             map.on('load', function() {
                 var baseLayers = [
                     {id: 'gsi-std', name: '地理院地図 標準地図'},
@@ -168,6 +169,20 @@
                 swoptions.baseLayers = baseLayers;
                 map.addControl(new SwitchLayerControl(swoptions), 'top-right');
             });
+            map.on('load', function() {
+              map.addLayer({
+              'id': 'vg',
+              'type': 'fill',
+              'source': {
+                 type: 'vector',
+                 url: 'mvt'
+                 },
+                 'source-layer': 'vg',
+                 'paint': {
+                 'fill-color': '#ff69b4',
+                 'fill-outline-color': '#ff69b4',
+                 }
+                 });
         </script>
 
     </body>
