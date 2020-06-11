@@ -1,19 +1,7 @@
-#/bin/bash
-
 for i in *.shp
  do ogr2ogr -s_srs EPSG:4326 -t_srs EPSG:4326 -oo ENCODING=CP932 -f GeoJSON ${i%.shp}.geojson $i
 done 
 
 for i in *.geojson;
  do  tippecanoe --output-to-directory=mvt --layer=vg --maximum-zoom=g --no-tile-compression --simplify-only-low-zooms $i; 
-done
-
--pf or --no-feature-limit: Don't limit tiles to 200,000 features
--pk or --no-tile-size-limit: Don't limit tiles to 500K bytes
--pC or --no-tile-compression: Don't compress the PBF vector tile data. If you are getting "Unimplemented type 3" error messages from a renderer, it is probably because it expects uncompressed tiles using this option rather than the normal gzip-compressed tiles.
--P or --read-parallel: Use multiple threads to read different parts of each GeoJSON input file at once. 
-
-元の設定
-for i in *.geojson;
- do  tippecanoe -o ${i%.geojson}.mbtiles -R ${i:5:1}/${i:7:3}/${i:11:2} -f -z 16 -l fude -pC -pk  -pf -P $i; 
 done
