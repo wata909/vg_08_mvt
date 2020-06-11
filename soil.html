@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>植生図閲覧サイト（テスト）</title>
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <script src='https://api.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css' rel='stylesheet' />
+        <style>
+            body { margin: 0; padding: 0; }
+            #map { position: absolute; top: 0; bottom: 0; width: 100%; };
+        </style>
+    </head>
+    <body>
+        <style>
+            #switch-layer-ctrl {
+                width: 150px;
+                padding: 10px 0px 10px 10px;
+            }
+        </style>
+
+        <nav id="menu"></nav>
+        <div id="map"></div>
+
+        <script>
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style: './vg-style.json',
+                zoom: 11,
+                center: [140.1007, 36.2342],
+                hash: true,
+                antialias: false
+            });
+            var nav = new mapboxgl.NavigationControl();
+            map.addControl(nav, 'top-left');
+            var scale = new mapboxgl.ScaleControl();
+            map.addControl(scale, 'bottom-left');
+            map.addControl(new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                }
+            }), 'top-left');
+
+            function SwitchLayerControl(options) {
+                this._baseLayers = options.baseLayers || [];
+            }
+            SwitchLayerControl.prototype._createRadio = function(layer) {
+                var radio = document.createElement('input');
+                radio.setAttribute('type', 'radio');
+                radio.id = layer.id;
+                if (layer.id === this._baseLayers[0].id) {
+                    radio.checked = true;
+                    map.setLayoutProperty(layer.id, 'visibility', 'visible');
+                } else {
+                    map.setLayoutProperty(layer.id, 'visibility', 'none');
+                }
+                this._container.appendChild(radio);
+                var name = document.createElement('label');
+                name.setAttribute('for', radio.id);
+                name.appendChild(document.createTextNode(layer.name));
+                this._container.appendChild(name);
+
+                var self = this;
+                radio.addEventListener('change', function(event) {
+                    event.target.checked = true;
+                    self._map.setLayoutProperty(event.target.id, 'visibility', 'visible');
+
+                    self._baseLayers.forEach(function(l) {
+                        if (l.id !== event.target.id) {
+                            document.getElementById(l.id).checked = false;
+                            self._map.setLayoutProperty(l.id, 'visibility', 'none');
+                        }
+                    }, self);
+                });
+            }
+            SwitchLayerControl.prototype._createRadioContainer = function() {
+                this._baseLayers.forEach(function(layer) {
+                    this._createRadio(layer);
+                    this._container.appendChild(document.createElement('br'));
+                }, this);
+            };
+            
+            SwitchLayerControl.prototype.onAdd = function(map) {
+                this._map = map;
+                this._container = document.createElement('div');
+                this._container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group';
+                this._container.id = 'switch-layer-ctrl';
+                this._createRadioContainer();
+                return this._container;
+            };
+            SwitchLayerControl.prototype.onRemove = function () {
+                this._container.parentNode.removeChild(this._container);
+                this._map = undefined;
+            };
+        </script>
+
+    </body>
+</html>
