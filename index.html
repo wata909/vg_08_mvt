@@ -92,6 +92,35 @@
                 this._container.parentNode.removeChild(this._container);
                 this._map = undefined;
             };
+
+            map.on('load', function() {
+                var baseLayers = [
+                    {id: 'gsi-std', name: '地理院地図 標準地図'},
+                    {id: 'gsi-pole', name: '地理院地図 淡色地図'},
+                    {id: 'gsi-sml', name: '地理院地図 最新写真'},
+                    {id: 'rapid-raster', name: '迅速測図'}
+                ];
+                var swoptions = {};
+                swoptions.baseLayers = baseLayers;
+                map.addControl(new SwitchLayerControl(swoptions), 'top-right');
+            });
+
+            map.on('click', 'vg', function(e) {
+                var feature = e.features[0];
+                var description = "<p>";
+                    description += "MAJOR1: ";
+                    description += feature.properties["MAJOR1"];
+                    description += "<br>";
+                    description += "NAME: ";
+                    description += feature.properties["NAME"];
+                    description += "</p>"
+                new mapboxgl.Popup()
+                    .setLngLat(e.lngLat)
+                    .setHTML(description)
+                    .addTo(map);
+                lock = true;
+            });
+
         </script>
 
     </body>

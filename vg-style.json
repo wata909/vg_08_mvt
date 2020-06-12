@@ -29,12 +29,12 @@
       "maxzoom": 18,
       "attribution": "国土地理院 / Shoreline data is derived from: United States. National Imagery and Mapping Agency. \"Vector Map Level 0 (VMAP0).\" Bethesda, MD: Denver, CO: The Agency; USGS Information Services, 1997."
     },
-    "gsi-ort": {
+    "gsi-sml": {
       "type": "raster",
       "tiles": [
-        "https://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg"
+        "https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/{z}/{x}/{y}.jpg"
       ],
-      "minzoom": 14,
+      "minzoom": 0,
       "maxzoom": 18,
       "attribution": "国土地理院"
     },
@@ -74,10 +74,10 @@
       }
     },
     {
-      "id": "gsi-ort",
+      "id": "gsi-sml",
       "type": "raster",
-      "source": "gsi-ort",
-      "minzoom": 14,
+      "source": "gsi-sml",
+      "minzoom": 0,
       "maxzoom": 18,
       "layout": {
         "visibility": "none"
